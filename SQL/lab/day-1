@@ -1,0 +1,29 @@
+CREATE TABLE Priya_54_EMP (
+    Employee_no Number,
+    Name varchar2(5),
+    Job char,
+    Mgr Number,
+    HireDate Date,
+    Salary Number,
+    Comission Number,
+    Dept Number
+);
+
+ALTER TABLE Priya_54_EMP
+ADD PhnNumber Number;
+
+ALTER TABLE Priya_54_EMP
+MODIFY Job varchar(5);
+
+DESC Priya_54_EMP
+
+INSERT INTO Priya_54_EMP (Employee_no, Name, Job, Mgr, HireDate, Salary, Comission,Dept,PhnNumber)
+VALUES ('1234', 'xyz', 'A', '4567', '04-jan-22', '40000','5000','12','12345');
+VALUES ('1235', 'abc', 'B', '4568', '05-jan-22', '40000','5000','12','12346');
+VALUES ('1236', 'pqr', 'C', '4569', '06-jan-22', '40000','5000','12','12347');
+VALUES ('1237', 'mno', 'D', '4570', '07-jan-22', '40000','5000','12','12348');
+VALUES ('1238', 'ghi', 'E', '4571', '08-jan-22', '40000','5000','12','12349');
+
+SELECT * FROM Priya_54_EMP;
+DROP TABLE Priya_54_EMP;
+DESC Priya_54_EMP;
