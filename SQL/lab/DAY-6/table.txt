@@ -1,0 +1,71 @@
+CREATE TABLE EMP_54 (
+    ENO NUMBER PRIMARY KEY , 
+    ENAME VARCHAR(30), 
+    ZIP NUMBER, 
+    HDATE DATE);
+
+    CREATE TABLE PARTS_54 (
+        PNO NUMBER PRIMARY KEY, 
+        PNAME VARCHAR(30), 
+        QOH NUMBER , 
+        PRICE NUMBER , 
+        LEVL NUMBER
+        );
+
+        CREATE TABLE  CUSTOMERS_54 (
+            CNO NUMBER PRIMARY KEY,
+            CNAME  VARCHAR2(30),
+            STREET  VARCHAR2(25),
+            ZIP NUMBER,
+            FOREIGN KEY (ZIP) REFERENCES ZIPCODES_54(ZIP),
+            PHONE NUMBER);
+
+     CREATE TABLE ORDERS_54(
+            ONO NUMBER PRIMARY KEY,
+            CNO NUMBER,
+            ENO NUMBER,
+            FOREIGN KEY (CNO) REFERENCES CUSTOMERS_54(CNO),
+            FOREIGN KEY (ENO) REFERENCES EMP_54(ENO),
+            PRECEIVED INT,
+            SHIPPED DATE);
+
+     CREATE TABLE ODETAILS_54(
+         ONO NUMBER,
+         PNO NUMBER,
+         FOREIGN KEY (ONO)  REFERENCES  ORDERS_54(ONO), 
+         FOREIGN KEY (PNO)  REFERENCES  PARTS_54(PNO), 
+         QTY NUMBER);
+
+       CREATE TABLE ZIPCODES_54(
+        ZIP NUMBER PRIMARY KEY, 
+        CITY VARCHAR(30));
+
+    1. Get PNO & PNAME values of parts that are priced less than 20.
+    -> SELECT PNO,PNAME FROM PARTS_54 WHERE PRICE<20;
+    2. Get PNO values for parts for which orders have been placed
+    ->SELECT PNO FROM PARTS_54 P,ODETAILS_54 OD,ORDERS_54 OR
+      WHERE P.PNO=OD.PNO AND OR.ONO=OD.ONO;
+    3. Get all the details of customers whose names begin with the letter “S"
+    ->SELECT CNAME FROM CUSTOMERS_54 WHERE CNAME LIKE 'S%';
+    4.Get the ONO & CNAME values for customers whose orders have not yet been shipped.
+ -> SELECT O.ONO,C.CNAME FROM CUSTOMERS_54 C,ORDERS_54 O
+    WHERE C.CNO=O.CNO AND C.CNO NOT IN(
+        SELECT CNO FROM ORDERS_54 WHERE SHIPPED NOT NULL;
+    )
+     5. Get CNAME & ENAME pairs such the customer with name CNAME has placed and ordered 
+through the employees with name ENAME.
+-> SELECT CNAME,ENAME FROM EMP_54 E,CUSTOMERS_54 C,ORDERS_54 O
+ WHERE E.ENO=O.ENO AND C.CNO=O.CNO;
+ 6. Get the name of employees who was hired on the earliest date.
+ SELECT HDATE FROM EMP_54 
+ GROUP BY HDATE LIMIT 1;
+ 7.Retrieve the part number, part name and price of parts with price greater than 20000 in an 
+ascending order of part number.
+SELECT  PNO,PNAME, PRICE FROM PARTS_54 WHERE PRICE>20000 ORDER BY PNO;
+8. For each part, get PNO & PNAME values along with total sales. 
+SELECT PNO,PNAME,SUM()
+9. Get the total quantity of parts 10601 that has been ordered.
+->SELECT COUNT(QTY) FROM ODETAILS_54 WHERE PN0=10601;
+10. Get the ENO values of employees from city “Mumbai”.
+->SELECT ENO FROM EMP_54 E,ZIPCODES_54 Z
+WHERE E.ZIP=Z.ZIP AND CITY='Mumbai';
